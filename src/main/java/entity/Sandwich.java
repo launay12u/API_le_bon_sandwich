@@ -21,12 +21,17 @@ public class Sandwich implements Serializable {
     @Id
     private String id;
     private String nom;
+    private Taille taille;
+    private Pain pain;
+    private ArrayList<Ingredient> ingredients;
 
     public Sandwich() {}
 
-    public Sandwich(String id, String nom) {
+    public Sandwich(String id, Taille taille, Pain pain) {
         this.id = id;
-        this.nom = nom;
+        this.taille = taille;
+        this.pain = pain;
+        this.ingredients = new ArrayList<Ingredient>();
     }
 
     public String getId() {
@@ -45,5 +50,27 @@ public class Sandwich implements Serializable {
         this.nom = nom;
     }
 
+    public Taille getTaille() {
+        return taille;
+    }
 
+    public void setTaille(Taille taille) {
+        this.taille = taille;
+    }
+
+    public Pain getPain() {
+        return pain;
+    }
+
+    public void setPain(Pain pain) {
+        this.pain = pain;
+    }
+
+    public ArrayList<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
 }
