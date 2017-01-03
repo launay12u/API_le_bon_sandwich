@@ -1,15 +1,11 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -21,9 +17,15 @@ public class Sandwich implements Serializable {
     @Id
     private String id;
     private String nom;
+    @ManyToOne
+    @JsonBackReference
     private Taille taille;
+    @ManyToOne
+    @JsonBackReference
     private Pain pain;
-    private ArrayList<Ingredient> ingredients;
+    @OneToMany(mappedBy = "sandwich")
+    @JsonBackReference
+    private List<Ingredient> ingredients;
 
     public Sandwich() {}
 
@@ -66,7 +68,7 @@ public class Sandwich implements Serializable {
         this.pain = pain;
     }
 
-    public ArrayList<Ingredient> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
