@@ -1,8 +1,10 @@
 package entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * Created by debian on 03/01/17.
@@ -11,11 +13,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 @NamedQuery(name = "Taille.FindAll",query = "SELECT t FROM Taille t")
-public class Taille {
+public class Taille implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    private String id;
     private String nom;
     private int nb_ingredient;
     private double prix;
+
+    public Taille(){}
 
     public Taille(String n, int nb, double px){
         this.nom = n;

@@ -1,18 +1,28 @@
 package entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * Created by debian on 03/01/17.
  */
 @Entity
 @XmlRootElement
-@NamedQuery(name = "Categorie.FindAll",query = "SELECT c FROM Categorie c")
-public class CategorieIngredient {
+@NamedQuery(name = "CategorieIngredient.FindAll",query = "SELECT c FROM CategorieIngredient c")
+public class CategorieIngredient implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    private String id;
     private String nom;
+
+    public CategorieIngredient(){
+
+    }
 
     public CategorieIngredient(String n){
         this.nom = n;

@@ -1,8 +1,11 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by debian on 03/01/17.
@@ -11,10 +14,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 @NamedQuery(name = "Ingredient.FindAll",query = "SELECT i FROM Ingredient i")
-public class Ingredient {
+public class Ingredient implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    private String id;
 
     private String nom;
+    @ManyToOne
     private CategorieIngredient categorie;
+    @ManyToOne
+    @JsonBackReference
+    private Sandwich sandwich;
+
+    public Ingredient(){}
 
     public Ingredient(String n, CategorieIngredient cat){
         this.nom = n;
