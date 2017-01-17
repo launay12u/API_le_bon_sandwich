@@ -26,6 +26,8 @@ public class Sandwich implements Serializable {
     @OneToMany(mappedBy = "sandwich")
     @JsonBackReference
     private List<Ingredient> ingredients;
+    @OneToOne
+    private Commande commande;
 
     public Sandwich() {}
 
