@@ -6,4 +6,4 @@ POSTEL Romain
 PEREIRA Alexandre
 LAUNAY Guillaume
 PIERRE Alexandre
-GIOVANELLI Alexis
+GIOVANNELLI Alexis
