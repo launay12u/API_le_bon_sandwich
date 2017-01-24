@@ -43,6 +43,8 @@ public class Taille implements Serializable {
         return nb_ingredient;
     }
 
+    public String getId(){return this.id;}
+
     public void setNb_ingredient(int nb_ingredient) {
         this.nb_ingredient = nb_ingredient;
     }
