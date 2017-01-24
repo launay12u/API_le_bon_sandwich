@@ -21,7 +21,7 @@ import javax.ws.rs.core.*;
  * Created by debian on 24/01/17.
  */
 
-@Path("/ingredients")
+@Path("/ingredient")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Stateless

@@ -20,7 +20,7 @@ import javax.ws.rs.core.*;
  * Created by debian on 24/01/17.
  */
 
-@Path("/Pain")
+@Path("/pain")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Stateless
@@ -49,6 +49,7 @@ public class PainRepresentation {
     }
 
     @POST
+    //@Consumes(MediaType.APPLICATION_JSON)
     public Response addPain(Pain pain, @Context UriInfo uriInfo){
         Pain newPain = this.pRessource.save(pain);
         URI uri = uriInfo.getAbsolutePathBuilder().path(newPain.getId()).build();
