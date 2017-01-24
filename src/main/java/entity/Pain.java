@@ -35,4 +35,6 @@ public class Pain implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
+
+    public void setId(String id){ this.id = id;}
 }
