@@ -35,4 +35,6 @@ public class CategorieIngredient implements Serializable {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    public void setId(String id){this.id = id;}
 }
