@@ -43,6 +43,8 @@ public class Ingredient implements Serializable {
         this.nom = nom;
     }
 
+    public void setId(String id){this.id = id;}
+
     public CategorieIngredient getCategorie() {
         return categorie;
     }
