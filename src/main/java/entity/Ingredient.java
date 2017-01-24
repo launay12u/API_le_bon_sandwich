@@ -39,6 +39,8 @@ public class Ingredient implements Serializable {
         return nom;
     }
 
+    public String getId(){return id;}
+
     public void setNom(String nom) {
         this.nom = nom;
     }

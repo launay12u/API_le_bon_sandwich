@@ -34,7 +34,7 @@ public class SandwichRepresentation {
 
     @GET
     @Path("/{sandwichId}")
-    public Response getMessage(@PathParam("sandwichId") String sandwichId, @Context UriInfo uriInfo) {
+    public Response getSandwich(@PathParam("sandwichId") String sandwichId, @Context UriInfo uriInfo) {
         Sandwich sandwich = this.sdwResource.findById(sandwichId);
         if (sandwich != null) {
             return Response.ok(sandwich).build();
@@ -54,7 +54,7 @@ public class SandwichRepresentation {
 
     @DELETE
     @Path("/{sandwichId}")
-    public void deleteMessage(@PathParam("sandwichId") String id) {
+    public void deleteSandwich(@PathParam("sandwichId") String id) {
         this.sdwResource.delete(id);
     }
 }
