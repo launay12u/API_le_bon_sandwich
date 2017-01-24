@@ -1,7 +1,6 @@
 package boundary;
 
 import entity.Ingredient;
-import entity.Sandwich;
 
 import java.net.URI;
 import java.util.List;
