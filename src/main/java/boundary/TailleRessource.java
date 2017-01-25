@@ -33,6 +33,12 @@ public class TailleRessource {
 
     public Taille save(Taille t){
         t.setId(UUID.randomUUID().toString());
+        List<Taille> list = this.findAll();
+        for (Taille taille : list){
+            if(taille.getNom().equals(t.getNom())){
+                return taille;
+            }
+        }
         return this.em.merge(t);
     }
 

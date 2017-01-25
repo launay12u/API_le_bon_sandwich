@@ -35,6 +35,12 @@ public class CategorieIngredientRessource {
 
     public CategorieIngredient save(CategorieIngredient ci){
         ci.setId(UUID.randomUUID().toString());
+        List<CategorieIngredient> list = this.findAll();
+        for (CategorieIngredient c : list){
+            if(c.getNom().equals(ci.getNom())){
+                return c;
+            }
+        }
         return this.em.merge(ci);
     }
 

@@ -29,6 +29,12 @@ public class PainRessource {
 
     public Pain save(Pain p){
         p.setId(UUID.randomUUID().toString());
+        List<Pain> list = this.findAll();
+        for (Pain pain : list){
+            if(pain.getType().equals(p.getType())){
+                return pain;
+            }
+        }
         return this.em.merge(p);
     }
 
