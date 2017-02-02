@@ -16,6 +16,7 @@ package entity;
 
 @Entity
 @XmlRootElement
+@NamedQuery(name = "Commande.FindAll",query = "SELECT c FROM Commande c")
 public class Commande implements Serializable{
 
     @Id
@@ -27,6 +28,14 @@ public class Commande implements Serializable{
     private String Etat;
 
     public Commande(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public List<Sandwich> getSandwichs() {
         return sandwichs;
