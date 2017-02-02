@@ -8,14 +8,14 @@ import java.io.Serializable;
  */
 
 @XmlRootElement
-public class categorie_link_ingredient{
+public class Categorie_link_ingredient{
 
     private String id_categ;
     private String nom_categ;
 
-    public categorie_link_ingredient(){}
+    public Categorie_link_ingredient(){}
 
-    public categorie_link_ingredient(String id_categ, String nom_categ) {
+    public Categorie_link_ingredient(String id_categ, String nom_categ) {
         this.id_categ = id_categ;
         this.nom_categ = nom_categ;
     }
