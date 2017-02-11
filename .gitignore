@@ -19,6 +19,5 @@ jboss/server/minimal/work/**/*
 *.DEPLOYED
 
 .idea/*
-.gitignore
 target/classes/*
 target/le_bon_sandwich/*
