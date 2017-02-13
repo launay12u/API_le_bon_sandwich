@@ -1,6 +1,9 @@
 package boundary;
 
+import entity.Ingredient;
+import entity.Pain;
 import entity.Sandwich;
+import entity.Taille;
 //import sun.plugin2.message.Message;
 
 import java.util.ArrayList;
@@ -34,6 +37,26 @@ public class SandwichResource {
     public Sandwich save(Sandwich sdw) {
         sdw.setId(UUID.randomUUID().toString());
         return this.em.merge(sdw);
+    }
+
+    public Sandwich ajouteTaille(Sandwich sdw, Taille t){
+        sdw.setTaille(t);
+        this.em.persist(sdw);
+        return sdw;
+    }
+
+    public Sandwich ajoutePain(Sandwich sdw, Pain p){
+        sdw.setPain(p);
+        this.em.persist(sdw);
+        return sdw;
+    }
+
+    public Sandwich ajouteIngredients(Sandwich sdw, Ingredient ing){
+        List<Ingredient> l_ing = sdw.getIngredients();
+        l_ing.add(ing);
+        sdw.setIngredients(l_ing);
+        this.em.persist(sdw);
+        return sdw;
     }
 
     public void delete(String id) {

@@ -39,6 +39,14 @@ public class CommandeRessource {
         return this.em.merge(cmd);
     }
 
+    public Commande ajouteSandwich(Commande cmd, Sandwich sdw){
+        List<Sandwich> l_sdw = cmd.getSandwichs();
+        l_sdw.add(sdw);
+        cmd.setSandwichs(l_sdw);
+        this.em.persist(cmd);
+        return cmd;
+    }
+
     public void delete(String id) {
         try {
             Commande ref = this.em.getReference(Commande.class, id);

@@ -24,7 +24,7 @@ public class Sandwich implements Serializable {
     @JsonBackReference
     private Pain pain;
     @OneToMany(mappedBy = "sandwich")
-    @JsonBackReference
+    @JsonManagedReference
     private List<Ingredient> ingredients;
 
     public Sandwich() {}
@@ -72,7 +72,7 @@ public class Sandwich implements Serializable {
         return ingredients;
     }
 
-    public void setIngredients(ArrayList<Ingredient> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 }

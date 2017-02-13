@@ -1,5 +1,6 @@
 package boundary;
 
+import entity.CategorieIngredient;
 import entity.Ingredient;
 import entity.Sandwich;
 //import sun.plugin2.message.Message;
@@ -43,6 +44,12 @@ public class IngredientRessource {
             }
         }
         return this.em.merge(ing);
+    }
+
+    public Ingredient ajouteIngredient(Ingredient ing, CategorieIngredient categ){
+        Ingredient i = new Ingredient(ing.getId(), categ);
+        this.em.persist(i);
+        return i;
     }
 
     public void delete(String id){

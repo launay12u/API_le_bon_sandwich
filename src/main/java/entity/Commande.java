@@ -5,6 +5,7 @@ package entity;
  */
 
         import com.fasterxml.jackson.annotation.JsonBackReference;
+        import com.fasterxml.jackson.annotation.JsonManagedReference;
 
         import javax.persistence.*;
         import javax.xml.bind.annotation.XmlRootElement;
@@ -21,8 +22,9 @@ public class Commande implements Serializable{
 
     @Id
     private String id;
+
     @OneToMany
-    @JsonBackReference
+    @JsonManagedReference
     private List<Sandwich> sandwichs;
     private Date dateRetrait;
     private String Etat;
@@ -39,6 +41,10 @@ public class Commande implements Serializable{
 
     public List<Sandwich> getSandwichs() {
         return sandwichs;
+    }
+
+    public void setSandwichs(List<Sandwich> sandwichs) {
+        this.sandwichs = sandwichs;
     }
 
     public Date getDateRetrait() {

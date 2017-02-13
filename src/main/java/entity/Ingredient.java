@@ -22,8 +22,11 @@ public class Ingredient implements Serializable {
     private String id;
 
     private String nom;
+
     @ManyToOne
+    @JsonBackReference
     private CategorieIngredient categorie;
+
     @ManyToOne
     @JsonBackReference
     private Sandwich sandwich;
