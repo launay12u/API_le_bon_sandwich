@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -32,9 +34,15 @@ public class PainRepresentation {
     @GET
     public Response getAllPain(@Context UriInfo uriInfo){
         List<Pain> list_pain = this.pRessource.findAll();
-        GenericEntity<List<Pain>> list = new GenericEntity<List<Pain>>(list_pain){
-        };
-        return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        if (list_pain != null) {
+            GenericEntity<List<Pain>> list = new GenericEntity<List<Pain>>(list_pain) {
+            };
+            return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Aucun pain crée.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
     }
 
     @GET
@@ -44,6 +52,8 @@ public class PainRepresentation {
         if(pain != null){
             return Response.ok(pain).build();
         }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Aucun pain correspondant.").build();
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
@@ -51,11 +61,17 @@ public class PainRepresentation {
     @POST
     //@Consumes(MediaType.APPLICATION_JSON)
     public Response addPain(Pain pain, @Context UriInfo uriInfo){
-        Pain newPain = this.pRessource.save(pain);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(newPain.getId()).build();
-        return Response.created(uri)
-                .entity(newPain)
-                .build();
+        if(pain.getType() != null) {
+            Pain newPain = this.pRessource.save(pain);
+            URI uri = uriInfo.getAbsolutePathBuilder().path(newPain.getId()).build();
+            return Response.created(uri)
+                    .entity(newPain)
+                    .build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Il manque le paramètre type.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
     }
 
     @DELETE

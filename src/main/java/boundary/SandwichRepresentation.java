@@ -5,6 +5,8 @@ import java.net.URI;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -27,9 +29,15 @@ public class SandwichRepresentation {
     @GET
     public Response getAllSandwich(@Context UriInfo uriInfo){
         List<Sandwich> list_sandwich = this.sdwResource.findAll();
-        GenericEntity<List<Sandwich>> list = new GenericEntity<List<Sandwich>>(list_sandwich) {
-        };
-        return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        if (list_sandwich != null) {
+            GenericEntity<List<Sandwich>> list = new GenericEntity<List<Sandwich>>(list_sandwich) {
+            };
+            return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Aucun sandwich crée.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
     }
 
     @GET
@@ -39,6 +47,8 @@ public class SandwichRepresentation {
         if (sandwich != null) {
             return Response.ok(sandwich).build();
         } else {
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Ce sandwich n'existe pas.").build();
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }

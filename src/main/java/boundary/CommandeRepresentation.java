@@ -1,6 +1,8 @@
 package boundary;
 
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -36,9 +38,15 @@ public class CommandeRepresentation {
     @GET
     public Response getAllCommande(@Context UriInfo uriInfo){
         List<Commande> list_commande = this.cmdResource.findAll();
-        GenericEntity<List<Commande>> list = new GenericEntity<List<Commande>>(list_commande) {
-        };
-        return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        if (list_commande != null) {
+            GenericEntity<List<Commande>> list = new GenericEntity<List<Commande>>(list_commande) {
+            };
+            return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Aucune commande existante.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
     }
 
     @GET
@@ -48,6 +56,8 @@ public class CommandeRepresentation {
         if (commande != null) {
             return Response.ok(commande).build();
         } else {
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Cette commande n'existe pas.").build();
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
@@ -58,6 +68,15 @@ public class CommandeRepresentation {
         URI uri = uriInfo.getAbsolutePathBuilder().path(newCommande.getId()).build();
         return Response.created(uri)
                 .entity(newCommande)
+                .build();
+    }
+
+    @POST
+    @Path("/{commandeId}/addSandwich")
+    public Response addSandwichToCommande(Commande commande, Sandwich sandwich, @Context UriInfo uriInfo){
+        URI uri = uriInfo.getAbsolutePathBuilder().path(commande.getId()).build();
+        return Response.created(uri)
+                .entity(commande)
                 .build();
     }
 

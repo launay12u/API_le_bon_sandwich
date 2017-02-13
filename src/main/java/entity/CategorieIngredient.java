@@ -20,6 +20,7 @@ public class CategorieIngredient implements Serializable {
     @Id
     private String id;
     private String nom;
+    private String description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categorie")
     @JsonManagedReference
@@ -29,8 +30,9 @@ public class CategorieIngredient implements Serializable {
 
     }
 
-    public CategorieIngredient(String n){
+    public CategorieIngredient(String n, String d){
         this.nom = n;
+        this.description = d;
     }
 
     public String getNom() {
@@ -44,4 +46,20 @@ public class CategorieIngredient implements Serializable {
     }
 
     public void setId(String id){this.id = id;}
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
 }

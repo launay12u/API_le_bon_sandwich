@@ -2,10 +2,14 @@ package boundary;
 
 import com.sun.jndi.toolkit.url.Uri;
 import entity.CategorieIngredient;
+import entity.Ingredient;
+
 import java.net.URI;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -33,8 +37,15 @@ public class CategorieIngredientRepresentation
     @GET
     public Response getAllCategorieIngredient(@Context UriInfo uriInfo){
         List<CategorieIngredient> list_categorie = this.ciResource.findAll();
-        GenericEntity<List<CategorieIngredient>> list = new GenericEntity<List<CategorieIngredient>>(list_categorie){};
-        return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        if(list_categorie != null) {
+            GenericEntity<List<CategorieIngredient>> list = new GenericEntity<List<CategorieIngredient>>(list_categorie) {
+            };
+            return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Aucune catégorie crée.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
     }
 
     @GET
@@ -44,17 +55,53 @@ public class CategorieIngredientRepresentation
         if(categorie != null){
             return Response.ok(categorie).build();
         }else{
-            return Response.status(Response.Status.NOT_FOUND).build();
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Cette catégorie n'existe pas.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
         }
     }
 
     @POST
     public Response addCategorie(CategorieIngredient categorie, @Context UriInfo uriInfo){
-        CategorieIngredient newCategorie = this.ciResource.save(categorie);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(newCategorie.getId()).build();
-        return Response.created(uri)
-                .entity(newCategorie)
-                .build();
+        if(categorie.getNom() != null) {
+            if (categorie.getDescription() != null) {
+                CategorieIngredient newCategorie = this.ciResource.save(categorie);
+                URI uri = uriInfo.getAbsolutePathBuilder().path(newCategorie.getId()).build();
+                return Response.created(uri)
+                        .entity(newCategorie)
+                        .build();
+            }else {
+                JsonObject jsonError = Json.createObjectBuilder().
+                        add("error", "Il manque le paramètre description.").build();
+                return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+            }
+        }else {
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Il manque le paramètre nom.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
+    }
+
+    @GET
+    @Path("/{caegorieId}/ingredients")
+    public Response getIngredients(@PathParam("caegorieId") String categorieId){
+        CategorieIngredient ci = this.ciResource.findById(categorieId);
+        if (ci != null) {
+            List<Ingredient> l_ing = ci.getIngredients();
+            if (l_ing != null) {
+                GenericEntity<List<Ingredient>> list = new GenericEntity<List<Ingredient>>(l_ing) {
+                };
+                return Response.ok(list, MediaType.APPLICATION_JSON).build();
+            }else{
+                JsonObject jsonError = Json.createObjectBuilder().
+                        add("error", "Liste d'ingrédients de cette catégorie non trouvé.").build();
+                return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+            }
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Catégorie inexistante.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
     }
 
     @DELETE

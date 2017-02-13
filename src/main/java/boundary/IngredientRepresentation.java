@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,9 +36,15 @@ public class IngredientRepresentation {
     @GET
     public Response getAllIngredient(@Context UriInfo uriInfo){
         List<Ingredient> list_ingredient = this.ingRessource.findAll();
-        GenericEntity<List<Ingredient>> list = new GenericEntity<List<Ingredient>>(list_ingredient){
-        };
-        return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        if (list_ingredient != null) {
+            GenericEntity<List<Ingredient>> list = new GenericEntity<List<Ingredient>>(list_ingredient) {
+            };
+            return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Aucun ingrédient crée.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
     }
 
     @GET
@@ -46,17 +54,25 @@ public class IngredientRepresentation {
         if(ingredient != null){
             return Response.ok(ingredient).build();
         }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Cette ingrédient n'existe pas.").build();
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 
     @POST
     public Response addIngredient(Ingredient ingredient, @Context UriInfo uriInfo){
-        Ingredient newIngredient = this.ingRessource.save(ingredient);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(newIngredient.getId()).build();
-        return Response.created(uri)
-                .entity(newIngredient)
-                .build();
+        if (ingredient.getNom() != null) {
+            Ingredient newIngredient = this.ingRessource.save(ingredient);
+            URI uri = uriInfo.getAbsolutePathBuilder().path(newIngredient.getId()).build();
+            return Response.created(uri)
+                    .entity(newIngredient)
+                    .build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Il manque le paramètre nom.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
     }
 
     @DELETE

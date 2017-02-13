@@ -5,6 +5,8 @@ import java.net.URI;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -29,9 +31,16 @@ public class TailleRepresentation {
 
     @GET
     public Response getAllTaille(@Context UriInfo uriInfo){
-    List<Taille> list_taille = this.tResource.findAll();
-    GenericEntity<List<Taille>> list = new GenericEntity<List<Taille>>(list_taille){};
-    return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        List<Taille> list_taille = this.tResource.findAll();
+        if (list_taille != null) {
+            GenericEntity<List<Taille>> list = new GenericEntity<List<Taille>>(list_taille) {
+            };
+            return Response.ok(list, MediaType.APPLICATION_JSON).build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Aucune taille crée.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
     }
 
     @GET
@@ -41,17 +50,25 @@ public class TailleRepresentation {
         if(taille != null){
             return Response.ok(taille).build();
         }else{
-            return Response.status(Response.Status.NOT_FOUND).build();
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Cette taille n'existe pas.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
         }
     }
 
     @POST
     public Response addTaille(Taille taille, @Context UriInfo uriInfo){
-        Taille newTaille = this.tResource.save(taille);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(newTaille.getId()).build();
-        return Response.created(uri)
-                .entity(newTaille)
-                .build();
+        if (taille.getNom() != null) {
+            Taille newTaille = this.tResource.save(taille);
+            URI uri = uriInfo.getAbsolutePathBuilder().path(newTaille.getId()).build();
+            return Response.created(uri)
+                    .entity(newTaille)
+                    .build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Aucune taille crée.").build();
+            return Response.status(Response.Status.NOT_FOUND).entity(jsonError).build();
+        }
     }
 
     @DELETE
