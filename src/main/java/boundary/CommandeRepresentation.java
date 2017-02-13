@@ -72,12 +72,19 @@ public class CommandeRepresentation {
     }
 
     @POST
-    @Path("/{commandeId}/addSandwich")
-    public Response addSandwichToCommande(Commande commande, Sandwich sandwich, @Context UriInfo uriInfo){
-        URI uri = uriInfo.getAbsolutePathBuilder().path(commande.getId()).build();
-        return Response.created(uri)
-                .entity(commande)
-                .build();
+    @Path("/{commandeToken}/{commandeId}/addSandwich")
+    public Response addSandwichToCommande(@PathParam("commandeToken") String commandeToken, @PathParam("commandeId") String commandeId, Sandwich sandwich, @Context UriInfo uriInfo){
+        Commande commande = this.cmdResource.findById(commandeId);
+        if (commande.getToken() == commandeToken) {
+            URI uri = uriInfo.getAbsolutePathBuilder().path(commande.getId()).build();
+            return Response.created(uri)
+                    .entity(commande)
+                    .build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Le token ne correspond pas.").build();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
     @DELETE

@@ -10,6 +10,8 @@ package entity;
         import javax.persistence.*;
         import javax.xml.bind.annotation.XmlRootElement;
         import java.io.Serializable;
+        import java.security.MessageDigest;
+        import java.security.NoSuchAlgorithmException;
         import java.util.Date;
         import java.util.List;
 
@@ -29,7 +31,15 @@ public class Commande implements Serializable{
     private Date dateRetrait;
     private String Etat;
 
-    public Commande(){}
+    private String token;
+
+    public Commande(){
+        try {
+            this.token= MessageDigest.getInstance("MD5").digest(Long.toBinaryString(System.currentTimeMillis()).getBytes()).toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
 
     public String getId() {
         return id;
@@ -61,5 +71,13 @@ public class Commande implements Serializable{
 
     public void setEtat(String etat) {
         Etat = etat;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

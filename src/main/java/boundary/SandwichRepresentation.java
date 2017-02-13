@@ -1,6 +1,10 @@
 package boundary;
 
+import entity.Ingredient;
+import entity.Pain;
 import entity.Sandwich;
+import entity.Taille;
+
 import java.net.URI;
 import java.util.List;
 import javax.ejb.EJB;
@@ -25,6 +29,9 @@ import javax.ws.rs.core.*;
 public class SandwichRepresentation {
     @EJB
     SandwichResource sdwResource;
+
+    @EJB
+    IngredientRessource ingResource;
 
     @GET
     public Response getAllSandwich(@Context UriInfo uriInfo){
@@ -62,6 +69,75 @@ public class SandwichRepresentation {
                 .build();
     }
 
+    @POST
+    @Path("/{sandwichId}/addTaille")
+    public Response addTaille(@PathParam("sandwichId") String sandwichId, Taille taille, @Context UriInfo uriInfo){
+        Sandwich sdw = this.sdwResource.findById(sandwichId);
+        if (sdw != null) {
+            if (taille != null) {
+                Sandwich newSandwich = this.sdwResource.ajouteTaille(sdw, taille);
+                URI uri = uriInfo.getAbsolutePathBuilder().path(newSandwich.getId()).build();
+                return Response.created(uri)
+                        .entity(newSandwich)
+                        .build();
+            }else{
+                JsonObject jsonError = Json.createObjectBuilder().
+                        add("error", "Aucune taille n'est passée en paramètre.").build();
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+        }else {
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Le sandwich sur lequel vous voulez préciser une taille n'a pas été créé.").build();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @POST
+    @Path("/{sandwichId}/addPain")
+    public Response addPain(@PathParam("sandwichId") String sandwichId, Pain pain, @Context UriInfo uriInfo){
+        Sandwich sdw = this.sdwResource.findById(sandwichId);
+        if (sdw != null){
+            if(pain != null){
+                Sandwich newSandwich = this.sdwResource.ajoutePain(sdw, pain);
+                URI uri = uriInfo.getAbsolutePathBuilder().path(newSandwich.getId()).build();
+                return Response.created(uri)
+                        .entity(newSandwich)
+                        .build();
+            }else{
+                JsonObject jsonError = Json.createObjectBuilder().
+                        add("error", "Aucun pain n'est passée en paramètre.").build();
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Le sandwich sur lequel vous voulez mettre un pain n'a pas été créé.").build();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @POST
+    @Path("/{sandwichId}/addIngredients/{ingredientId}")
+    public Response addIngredients(@PathParam("sandwichId") String sandwichId, @PathParam("ingredientId") String ingredientId, @Context UriInfo uriInfo){
+        Sandwich sdw = this.sdwResource.findById(sandwichId);
+        if(sdw != null){
+            Ingredient ing = this.ingResource.findById(ingredientId);
+            if (ing != null){
+                Sandwich newSandwich = this.sdwResource.ajouteIngredients(sdw, ing);
+                URI uri = uriInfo.getAbsolutePathBuilder().path(newSandwich.getId()).build();
+                return Response.created(uri)
+                        .entity(newSandwich)
+                        .build();
+            }else{
+                JsonObject jsonError = Json.createObjectBuilder().
+                        add("error", "Ingrédient non conforme ou inexistant.").build();
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Le sandwich sur lequel vous voulez ajouter un ingrédients n'a pas été créé.").build();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
     @DELETE
     @Path("/{sandwichId}")
     public void deleteSandwich(@PathParam("sandwichId") String id) {
