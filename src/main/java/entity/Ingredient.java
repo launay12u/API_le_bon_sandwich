@@ -3,8 +3,10 @@ package entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,17 +27,25 @@ public class Ingredient implements Serializable {
 
     @ManyToOne
     @JsonBackReference
-    private CategorieIngredient categorie;
+    private CategorieIngredient categorie = null;
 
-    @ManyToOne
-    @JsonBackReference
-    private Sandwich sandwich;
+    @XmlElement(name="_links")
+    @Transient
+    private List<Link> links = new ArrayList<>();
 
     public Ingredient(){}
+
+    public Ingredient(String n){
+        this.nom = n;
+    }
 
     public Ingredient(String n, CategorieIngredient cat){
         this.nom = n;
         this.categorie = cat;
+    }
+
+    public void addLink(String rel, String uri){
+        this.links.add(new Link(rel, uri));
     }
 
     public String getNom() {
@@ -56,5 +66,9 @@ public class Ingredient implements Serializable {
 
     public void setCategorie(CategorieIngredient categorie) {
         this.categorie = categorie;
+    }
+
+    public List<Link> getLinks() {
+        return links;
     }
 }

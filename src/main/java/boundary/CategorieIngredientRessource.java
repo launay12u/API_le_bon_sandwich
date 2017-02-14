@@ -1,7 +1,9 @@
 package boundary;
 
 import entity.CategorieIngredient;
+import entity.Ingredient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.ejb.Stateless;
@@ -41,6 +43,7 @@ public class CategorieIngredientRessource {
                 return c;
             }
         }
+        ci.setIngredients(new ArrayList<Ingredient>());
         return this.em.merge(ci);
     }
 

@@ -63,10 +63,15 @@ public class IngredientRepresentation {
 
     @Secured
     @POST
-    public Response addIngredient(Ingredient ingredient, @Context UriInfo uriInfo){
+    public Response addIngredient(Ingredient ingredient, @QueryParam("categorieId") String categorieId ,@Context UriInfo uriInfo){
         if (ingredient.getNom() != null) {
-            Ingredient newIngredient = this.ingRessource.save(ingredient);
-            URI uri = uriInfo.getAbsolutePathBuilder().path(newIngredient.getId()).build();
+            Ingredient newIngredient = this.ingRessource.ajouteIngredient(categorieId, new Ingredient(ingredient.getNom()));
+            URI uri = uriInfo.getBaseUriBuilder()
+                    .path(CategorieIngredientRepresentation.class)
+                    .path(categorieId)
+                    .path(IngredientRepresentation.class)
+                    .path(newIngredient.getId())
+                    .build();
             return Response.created(uri)
                     .entity(newIngredient)
                     .build();

@@ -23,7 +23,8 @@ public class Sandwich implements Serializable {
     @ManyToOne
     @JsonBackReference
     private Pain pain;
-    @OneToMany(mappedBy = "sandwich")
+
+    @OneToMany(cascade = {CascadeType.ALL})
     @JsonManagedReference
     private List<Ingredient> ingredients;
 

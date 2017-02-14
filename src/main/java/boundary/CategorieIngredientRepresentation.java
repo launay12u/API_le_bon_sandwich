@@ -6,6 +6,7 @@ import entity.Ingredient;
 import provider.Secured;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -34,11 +35,24 @@ public class CategorieIngredientRepresentation
 {
     @EJB
     CategorieIngredientRessource ciResource;
+    @EJB
+    IngredientRessource ingResource;
 
     @GET
     public Response getAllCategorieIngredient(@Context UriInfo uriInfo){
         List<CategorieIngredient> list_categorie = this.ciResource.findAll();
         if(list_categorie != null) {
+            for(CategorieIngredient ci : list_categorie) {
+                List<Ingredient> l_ing = this.ingResource.findAll(ci.getId());
+                ci.getLinks().clear();
+                ci.addLink(this.getUriForSelfCategorie(uriInfo, ci), "self");
+                ci.addLink(this.getUriForIngredients(uriInfo, ci), "ingredients");
+                for(Ingredient ing : l_ing){
+                    ing.getLinks().clear();
+                    ing.addLink(this.getUriForSelfIngredient(uriInfo, ci, ing), "self");
+                }
+                ci.setIngredients(l_ing);
+            }
             GenericEntity<List<CategorieIngredient>> list = new GenericEntity<List<CategorieIngredient>>(list_categorie) {
             };
             return Response.ok(list, MediaType.APPLICATION_JSON).build();
@@ -54,6 +68,11 @@ public class CategorieIngredientRepresentation
     public Response getCategorie(@PathParam("categorieId") String id, @Context UriInfo uriInfo){
         CategorieIngredient categorie = this.ciResource.findById(id);
         if(categorie != null){
+            categorie.getLinks().clear();
+            categorie.addLink(this.getUriForSelfCategorie(uriInfo, categorie), "self");
+            categorie.addLink(this.getUriForIngredients(uriInfo, categorie), "ingredients");
+            List<Ingredient> l_ing = this.ingResource.findAll(categorie.getId());
+            categorie.setIngredients(l_ing);
             return Response.ok(categorie).build();
         }else{
             JsonObject jsonError = Json.createObjectBuilder().
@@ -85,11 +104,11 @@ public class CategorieIngredientRepresentation
     }
 
     @GET
-    @Path("/{caegorieId}/ingredients")
+    @Path("/{caegorieId}/ingredient")
     public Response getIngredients(@PathParam("caegorieId") String categorieId){
         CategorieIngredient ci = this.ciResource.findById(categorieId);
         if (ci != null) {
-            List<Ingredient> l_ing = ci.getIngredients();
+            List<Ingredient> l_ing = this.ingResource.findAll(categorieId);
             if (l_ing != null) {
                 GenericEntity<List<Ingredient>> list = new GenericEntity<List<Ingredient>>(l_ing) {
                 };
@@ -106,10 +125,62 @@ public class CategorieIngredientRepresentation
         }
     }
 
+    @GET
+    @Path("{categorieId}/ingredients/{ingredientId}")
+    public Response getOneIngredient(@PathParam("categorieId") String categorieId, @PathParam("ingredientId") String ingredientId, @Context UriInfo uriInfo){
+        Ingredient ing = this.ingResource.findById(ingredientId);
+        return Response.ok(ing, MediaType.APPLICATION_JSON).build();
+    }
+
+    @POST
+    @Path("/{categorieId}/ingredients")
+    public Response addIngredient(@PathParam("categorieId") String categorieId, Ingredient ingredient, @Context UriInfo uriInfo){
+        Ingredient ing = this.ingResource.ajouteIngredient(categorieId, ingredient);
+        URI uri = uriInfo.getAbsolutePathBuilder()
+                .path("/")
+                .path(ing.getId())
+                .build();
+        return Response.created(uri).entity(ing).build();
+    }
+
     @DELETE
     @Path("/{categorieId}")
     public void deleteCategorie(@PathParam("categorieId") String id){
         this.ciResource.delete(id);
+    }
+
+    private String getUriForSelfCategorie(UriInfo uriInfo, CategorieIngredient categorie){
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(CategorieIngredientRepresentation.class)
+                .path(categorie.getId())
+                .build().toString();
+        return uri;
+    }
+
+    private String getUriForCategorie(UriInfo uriInfo){
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(CategorieIngredientRepresentation.class)
+                .build().toString();
+        return uri;
+    }
+
+    private String getUriForSelfIngredient(UriInfo uriInfo, CategorieIngredient categorie, Ingredient ing){
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(CategorieIngredientRepresentation.class)
+                .path(ing.getId())
+                .path(IngredientRepresentation.class)
+                .path(categorie.getId())
+                .build().toString();
+        return uri;
+    }
+
+    private String getUriForIngredients(UriInfo uriInfo, CategorieIngredient categorie){
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(CategorieIngredientRepresentation.class)
+                .path(categorie.getId())
+                .path(IngredientRepresentation.class)
+                .build().toString();
+        return uri;
     }
 
 }

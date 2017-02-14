@@ -35,19 +35,17 @@ public class IngredientRessource {
         return q.getResultList();
     }
 
-    public Ingredient save(Ingredient ing){
-        ing.setId(UUID.randomUUID().toString());
-        List<Ingredient> list = this.findAll();
-        for (Ingredient i : list){
-            if(i.getNom().equals(ing.getNom())){
-                return i;
-            }
-        }
-        return this.em.merge(ing);
+    public List<Ingredient> findAll(String categorieId){
+        Query q = this.em.createQuery("SELECT i FROM Ingredient i where i.categorie.id= :id");
+        q.setParameter("id", categorieId);
+        //q.setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH);
+        return q.getResultList();
     }
 
-    public Ingredient ajouteIngredient(Ingredient ing, CategorieIngredient categ){
-        Ingredient i = new Ingredient(ing.getId(), categ);
+    public Ingredient ajouteIngredient(String categId, Ingredient ing){
+        Ingredient i = new Ingredient(ing.getNom());
+        i.setId(UUID.randomUUID().toString());
+        i.setCategorie(this.em.find(CategorieIngredient.class, categId));
         this.em.persist(i);
         return i;
     }
