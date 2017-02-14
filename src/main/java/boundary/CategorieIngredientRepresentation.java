@@ -3,6 +3,7 @@ package boundary;
 import com.sun.jndi.toolkit.url.Uri;
 import entity.CategorieIngredient;
 import entity.Ingredient;
+import provider.Secured;
 
 import java.net.URI;
 import java.util.List;
@@ -61,6 +62,7 @@ public class CategorieIngredientRepresentation
         }
     }
 
+    @Secured
     @POST
     public Response addCategorie(CategorieIngredient categorie, @Context UriInfo uriInfo){
         if(categorie.getNom() != null) {

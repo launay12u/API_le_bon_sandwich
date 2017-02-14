@@ -1,6 +1,7 @@
 package boundary;
 
 import entity.Pain;
+import provider.Secured;
 
 import java.net.URI;
 import java.util.List;
@@ -58,6 +59,7 @@ public class PainRepresentation {
         }
     }
 
+    @Secured
     @POST
     //@Consumes(MediaType.APPLICATION_JSON)
     public Response addPain(Pain pain, @Context UriInfo uriInfo){

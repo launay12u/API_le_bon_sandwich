@@ -1,6 +1,7 @@
 package boundary;
 
 import entity.Ingredient;
+import provider.Secured;
 
 import java.net.URI;
 import java.util.List;
@@ -60,6 +61,7 @@ public class IngredientRepresentation {
         }
     }
 
+    @Secured
     @POST
     public Response addIngredient(Ingredient ingredient, @Context UriInfo uriInfo){
         if (ingredient.getNom() != null) {

@@ -1,6 +1,8 @@
 package boundary;
 
 import entity.Taille;
+import provider.Secured;
+
 import java.net.URI;
 import java.util.List;
 import javax.ejb.EJB;
@@ -56,6 +58,7 @@ public class TailleRepresentation {
         }
     }
 
+    @Secured
     @POST
     public Response addTaille(Taille taille, @Context UriInfo uriInfo){
         if (taille.getNom() != null) {
