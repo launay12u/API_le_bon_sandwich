@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css" rel="stylesheet">
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+      <meta charset="utf-8"/>
+      <title>Documentation API REST LeBonSandwich</title>
+    </head>
+
+    <body>
+
+        <div class="container">
+          <div class="row">
+            <h2 class="center">Documentation API REST LeBonSandwich</h2>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <ul class="collection">
+
+            <!--
+              Copier la ligne suivante en complétant les champs
+              <li class="collection-item"><h5>/api/ <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> description <br/><strong>Params : </strong> paramètres à passer dans le body</li>
+            -->
+            <li class="collection-item"><h5>/api/authentification <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Permet de récupérer un token de sécurité <br/><strong>Params : </strong>{username:root, password:root} </li>
+            
+            <li class="collection-item"><h5>/api/categorieIngredient <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Permet de récupérer tout les catégories des ingrédients<br/><strong>Params : </strong> Pas de paramètres</li>
+            
+            <li class="collection-item"><h5>/api/categorieIngredient/{id} <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Permet de récupérer une catégorie d'ingrédients<br/><strong>Params : </strong> Pas de paramètres</li>
+            
+            <li class="collection-item"><h5>/api/categorieIngredient <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Permet de créer une catégorie d'ingrédients<br/><strong>Params : </strong> {nom:String, description:String} </li>
+            
+            <li class="collection-item"><h5>/api/categorieIngredient/{categorieId}/ingredient <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Récupére tous les liens d'ingrédient d'une catégorie <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/categorieIngredient/{categorieId}/ingredients/{ingredientId} <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Récupére un ingrédients d'une catégorie <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/categorieIngredient/{categorieId}/ingredients <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Ajoute un ingredient à une catégorie <br/><strong>Params : </strong> {nom : String} </li>
+            
+            <li class="collection-item"><h5>/api/categorieIngredient/{categorieId} <strong class="secondary-content">Methode : DELETE</strong></h5>  <br/><strong>Description :</strong> Supprime une catégorie <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/commandes <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Permet de récupérer toutes les commandes <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/commandes/{commandeId} <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Récupére une commande <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/commandes/{commandeToken}/{commandeId}/validate <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Permet de valider une commande<br/><strong>Params : </strong> Aucun paramètre nécessaire </li>
+            
+            <li class="collection-item"><h5>/api/commandes/{commandeToken}/{commandeId}/update/{sandwichId} <strong class="secondary-content">Methode : PUT</strong></h5>  <br/><strong>Description :</strong> Permet de mettre à jour un sandwich d'une commande<br/><strong>Params : </strong> Aucun paramètre nécessaire </li>
+            
+            <li class="collection-item"><h5>/api/commandes <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Ajoute une commande<br/><strong>Params : </strong> {nom : String} </li>
+            
+            <li class="collection-item"><h5>/api/commandes/{commandeId}/sandwich/{sandwichId} <strong class="secondary-content">Methode : Delete</strong></h5>  <br/><strong>Description :</strong> Supprime le sandwich d'une commande<br/><strong>Params : </strong> Aucun paramètre nécessaire </li>
+            
+            <li class="collection-item"><h5>/api/commandes/{commandeToken}/{commandeId}/addSandwich<strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Permet de rajouter un sandwich dans une commande <br/><strong>Params : </strong> {nom : String}</li>
+            
+            <li class="collection-item"><h5>/api/commandes/{commandeId} <strong class="secondary-content">Methode : DELETE</strong></h5>  <br/><strong>Description :</strong> Supprime une commande <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/ingredients <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Récupére tout les ingrédients<br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/ingredients/{ingredientId} <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Récupére un ingrédient <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/ingredients <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Créer un nouvel ingrédient <br/><strong>Params : </strong> {nom : String}</li>
+            
+            <li class="collection-item"><h5>/api/ingredients/{ingredientId} <strong class="secondary-content">Methode : DELETE</strong></h5>  <br/><strong>Description :</strong> Supprime un ingrédient <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/pain <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Récupére tout les pains<br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/pain/{painId} <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Récupére un pain <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/pain <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Créer un nouveau pain <br/><strong>Params : </strong> {nom : String}</li>
+            
+            <li class="collection-item"><h5>/api/pain/{painId} <strong class="secondary-content">Methode : DELETE</strong></h5>  <br/><strong>Description :</strong> Supprime un pain <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/sandwichs <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Permet de récupérer tous les sandwichs <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/sandwichs/{sandwichId} <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> récupère un sandwich <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/sandwichs <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Permet de créer un sandwich <br/><strong>Params : </strong> {nom : String}</li>
+            
+            <li class="collection-item"><h5>/api/sandwichs/{sandwichId}/addTaille <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Permet d'ajouter une taille à un sandwich <br/><strong>Params : </strong> {nom : String, nb_ingredient : Integer, prix: Integer}</li>
+            
+            <li class="collection-item"><h5>/api/sandwichs/{sandwichId}/addPain <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Permet d'ajouter un pain à un sandwich <br/><strong>Params : </strong> {nom: String}</li>
+            
+            <li class="collection-item"><h5>/api/sandwichs/{sandwichId}/addIngredients/{ingredientId} <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Permet d'ajouter un ingredient à un sandwich <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/sandwichs/{sandwichId} <strong class="secondary-content">Methode : DELETE</strong></h5>  <br/><strong>Description :</strong> Supprime un sandwich <br/><strong>Params : </strong> Aucun paramètre nécessaire </li>
+            
+            <li class="collection-item"><h5>/api/taille<strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Permet de récupérer toutes les tailles <br/><strong>Params : </strong> Aucun paramètre nécessaire </li>
+            
+            <li class="collection-item"><h5>/api/taille/{tailleId} <strong class="secondary-content">Methode : GET</strong></h5>  <br/><strong>Description :</strong> Permet de récupérer une taille <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+            <li class="collection-item"><h5>/api/taille <strong class="secondary-content">Methode : POST</strong></h5>  <br/><strong>Description :</strong> Permet d'ajouter une taille <br/><strong>Params : </strong> {nom : String, nb_ingredient : Integer, prix: Integer}</li>
+            
+            <li class="collection-item"><h5>/api/taille<strong class="secondary-content">Methode : DELETE</strong></h5>  <br/><strong>Description :</strong> Supprime une taille <br/><strong>Params : </strong> Aucun paramètre nécessaire</li>
+            
+          </ul>
+        </div>
+      </div>
+
+
+        <footer class="page-footer blue">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <a href="https://github.com/launay12u/API_le_bon_sandwich"><h5 class="white-text">Lien du GitHub</h5></a>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Contributeurs</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3">Giovannelli Alexis</a></li>
+                  <li><a class="grey-text text-lighten-3" >Launay Guillaume</a></li>
+                  <li><a class="grey-text text-lighten-3" >Pereira Alexandre</a></li>
+                  <li><a class="grey-text text-lighten-3" >Pierre Alexandre</a></li>
+                  <li><a class="grey-text text-lighten-3" >Postel Romain</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+
+          </div>
+        </footer>
+
+    </body>
+</html>
