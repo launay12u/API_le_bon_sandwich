@@ -59,6 +59,15 @@ public class SandwichResource {
         return sdw;
     }
 
+    public Sandwich update(Sandwich s, Sandwich updateSandwich){
+        Sandwich sandwich = this.em.getReference(Sandwich.class, s.getId());
+        sandwich.setIngredients(updateSandwich.getIngredients());
+        sandwich.setNom(updateSandwich.getNom());
+        sandwich.setPain(updateSandwich.getPain());
+        sandwich.setTaille(updateSandwich.getTaille());
+        return this.em.merge(sandwich);
+    }
+
     public void delete(String id) {
         try {
             Sandwich ref = this.em.getReference(Sandwich.class, id);

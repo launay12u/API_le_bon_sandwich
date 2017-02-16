@@ -3,9 +3,8 @@ package boundary;
 import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.persistence.Entity;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import entity.Sandwich;
@@ -15,13 +14,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.*;
 
 @Path("/commandes")
@@ -34,6 +28,9 @@ import javax.ws.rs.core.*;
 public class CommandeRepresentation {
     @EJB
     CommandeRessource cmdResource;
+
+    @EJB
+    SandwichResource snwRessource;
 
     @GET
     public Response getAllCommande(@Context UriInfo uriInfo){
@@ -83,6 +80,39 @@ public class CommandeRepresentation {
         }else{
             JsonObject jsonError = Json.createObjectBuilder().
                     add("error", "Le token ne correspond pas.").build();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @POST
+    @Path("/{commandeToken}/{commandeId}/validate")
+    public Response validateCommande(@PathParam("commandeToken") String commandeToken, @PathParam("commandeId") String commandeId){
+        Commande commande = this.cmdResource.findById(commandeId);
+        if(commande.getToken() == commandeToken){
+            this.cmdResource.update(commandeId, "validated");
+            JsonObject jsonSuccess = Json.createObjectBuilder().
+                    add("success", "La commande a été modifiée.").build();
+            return Response.status(Response.Status.OK).build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Le token ne correspond pas.").build();
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @PUT
+    @Path("/{commandeToken}/{commandeId}/update/{sandwichId}")
+    public Response updateSandwich(@PathParam("commandeToken") String commandeToken, @PathParam("commandeId") String commandeId, @PathParam("sandwichId") String sandwichId, Sandwich s){
+        Commande commande = this.cmdResource.findById(commandeId);
+        if(commande.getToken() == commandeToken && commande.getEtat() != "validated"){
+            Sandwich sandwich = this.snwRessource.findById(sandwichId);
+            this.snwRessource.update(sandwich, s);
+            JsonObject jsonSuccess = Json.createObjectBuilder().
+                    add("success", "Le sandwich a été modifié.").build();
+            return Response.status(Response.Status.OK).build();
+        }else{
+            JsonObject jsonError = Json.createObjectBuilder().
+                    add("error", "Le token ne correspond pas ou la commande est déjà validée.").build();
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }

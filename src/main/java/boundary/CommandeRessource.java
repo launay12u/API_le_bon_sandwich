@@ -47,6 +47,12 @@ public class CommandeRessource {
         return cmd;
     }
 
+    public Commande update(String id, String etat){
+        Commande commande = this.em.getReference(Commande.class, id);
+        commande.setEtat(etat);
+        return this.em.merge(commande);
+    }
+
     public void delete(String id) {
         try {
             Commande ref = this.em.getReference(Commande.class, id);

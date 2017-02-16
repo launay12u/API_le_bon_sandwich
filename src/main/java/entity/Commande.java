@@ -32,10 +32,11 @@ public class Commande implements Serializable{
     private String Etat;
 
     private String token;
-
+    
     public Commande(){
         try {
             this.token= MessageDigest.getInstance("MD5").digest(Long.toBinaryString(System.currentTimeMillis()).getBytes()).toString();
+            this.Etat = "Created";
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
