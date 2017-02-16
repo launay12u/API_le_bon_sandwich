@@ -122,4 +122,11 @@ public class CommandeRepresentation {
     public void deleteCommande(@PathParam("commandeId") String id) {
         this.cmdResource.delete(id);
     }
+
+    @DELETE
+    @Path("/{commandeId}/sandwich/{sandwichId}")
+    public void deleteSandwich(@PathParam("commandeId") String commandeId, @PathParam("sandwichId") String sandwichId){
+        this.cmdResource.deleteSandwich(commandeId, sandwichId);
+
+    }
 }

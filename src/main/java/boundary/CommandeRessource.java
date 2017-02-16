@@ -61,4 +61,13 @@ public class CommandeRessource {
             // on veut supprimer, et elle n'existe pas, donc c'est bon
         }
     }
+
+    public Commande deleteSandwich(String commandeId, String sandwichId){
+        Commande commande = this.em.getReference(Commande.class, commandeId);
+        Sandwich sandwich = this.em.getReference(Sandwich.class, sandwichId);
+        List<Sandwich> list = commande.getSandwichs();
+        list.remove(sandwich);
+        commande.setSandwichs(list);
+        return this.em.merge(commande);
+    }
 }
